@@ -84,7 +84,10 @@
           "key": "policy_status",
           "type": "enum",
           "label": "Policy status on that date",
-          "values": ["In force", "Cancelled"]
+          "values": [
+            "In force",
+            "Cancelled"
+          ]
         }
       ],
       "outputs": [
@@ -92,7 +95,10 @@
           "key": "decision",
           "type": "enum",
           "label": "Decision",
-          "values": ["Allowed", "Not allowed"]
+          "values": [
+            "Allowed",
+            "Not allowed"
+          ]
         },
         {
           "key": "reason",
@@ -664,7 +670,10 @@
           "key": "decision",
           "type": "enum",
           "label": "Decision",
-          "values": ["Process", "Send for approval"]
+          "values": [
+            "Process",
+            "Send for approval"
+          ]
         },
         {
           "key": "reason",
@@ -820,7 +829,10 @@
           "key": "statement_needed",
           "type": "enum",
           "label": "Statement of no loss needed",
-          "values": ["Yes", "No"]
+          "values": [
+            "Yes",
+            "No"
+          ]
         }
       ],
       "examples": [
@@ -959,7 +971,10 @@
           "key": "decision",
           "type": "enum",
           "label": "Decision",
-          "values": ["Process", "Send for approval"]
+          "values": [
+            "Process",
+            "Send for approval"
+          ]
         },
         {
           "key": "reason",
@@ -997,12 +1012,12 @@
           },
           "expected": {
             "decision": {
-              "value": "Process",
-              "text": "Process"
+              "value": "Send for approval",
+              "text": "Send for approval"
             },
             "reason": {
-              "value": null,
-              "text": ""
+              "value": "Return premium over $250",
+              "text": "Return premium over $250"
             }
           }
         },
@@ -1062,6 +1077,25 @@
               "text": ""
             }
           }
+        },
+        {
+          "id": "R-009/E6",
+          "inputs": {
+            "premium_change": {
+              "value": -250,
+              "text": "-$250.00"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Process",
+              "text": "Process"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
         }
       ],
       "scenarios": []
@@ -1101,7 +1135,10 @@
           "key": "decision",
           "type": "enum",
           "label": "Decision",
-          "values": ["Process", "Send for approval"]
+          "values": [
+            "Process",
+            "Send for approval"
+          ]
         },
         {
           "key": "reasons",
@@ -1542,13 +1579,20 @@
           "key": "declarations_page",
           "type": "enum",
           "label": "New declarations page",
-          "values": ["Yes", "No"]
+          "values": [
+            "Yes",
+            "No"
+          ]
         },
         {
           "key": "id_cards",
           "type": "enum",
           "label": "New ID cards",
-          "values": ["None", "New vehicle only", "All vehicles"]
+          "values": [
+            "None",
+            "New vehicle only",
+            "All vehicles"
+          ]
         }
       ],
       "examples": [
@@ -2167,7 +2211,12 @@
           "key": "state",
           "type": "enum",
           "label": "State",
-          "values": ["CA", "FL", "NY", "TX"]
+          "values": [
+            "CA",
+            "FL",
+            "NY",
+            "TX"
+          ]
         },
         {
           "key": "mailed",
@@ -2316,13 +2365,21 @@
           "key": "state",
           "type": "enum",
           "label": "State",
-          "values": ["CA", "FL", "NY", "TX"]
+          "values": [
+            "CA",
+            "FL",
+            "NY",
+            "TX"
+          ]
         },
         {
           "key": "reason",
           "type": "enum",
           "label": "Reason",
-          "values": ["Material misrepresentation or fraud", "Driver's license suspended or revoked"]
+          "values": [
+            "Material misrepresentation or fraud",
+            "Driver's license suspended or revoked"
+          ]
         },
         {
           "key": "mailed",
@@ -2534,7 +2591,10 @@
           "key": "outcome",
           "type": "enum",
           "label": "Outcome",
-          "values": ["Cancellation withdrawn", "Cancellation stands"]
+          "values": [
+            "Cancellation withdrawn",
+            "Cancellation stands"
+          ]
         },
         {
           "key": "reason",
@@ -2680,7 +2740,11 @@
           "key": "cancel_reason",
           "type": "enum",
           "label": "Cancelled for",
-          "values": ["Nonpayment", "Policyholder's request", "Another company reason"]
+          "values": [
+            "Nonpayment",
+            "Policyholder's request",
+            "Another company reason"
+          ]
         },
         {
           "key": "days_after",
@@ -2691,13 +2755,19 @@
           "key": "statement",
           "type": "enum",
           "label": "Statement of no loss",
-          "values": ["Yes", "No"]
+          "values": [
+            "Yes",
+            "No"
+          ]
         },
         {
           "key": "term_ended",
           "type": "enum",
           "label": "Term ended",
-          "values": ["Yes", "No"]
+          "values": [
+            "Yes",
+            "No"
+          ]
         }
       ],
       "outputs": [
@@ -2705,7 +2775,11 @@
           "key": "decision",
           "type": "enum",
           "label": "Decision",
-          "values": ["Reinstate without a gap", "Reinstate with a gap", "Decline"]
+          "values": [
+            "Reinstate without a gap",
+            "Reinstate with a gap",
+            "Decline"
+          ]
         },
         {
           "key": "reason",
@@ -3189,7 +3263,10 @@
           "key": "role",
           "type": "enum",
           "label": "Role",
-          "values": ["Service representative", "Supervisor"]
+          "values": [
+            "Service representative",
+            "Supervisor"
+          ]
         }
       ],
       "outputs": [
@@ -3197,7 +3274,10 @@
           "key": "allowed",
           "type": "enum",
           "label": "Allowed",
-          "values": ["Yes", "No"]
+          "values": [
+            "Yes",
+            "No"
+          ]
         }
       ],
       "examples": [
