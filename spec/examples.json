@@ -1,0 +1,3417 @@
+{
+  "version": 1,
+  "note": "Generated from the requirement files in this folder. Do not edit.",
+  "requirements": [
+    {
+      "id": "R-001",
+      "title": "Find a policy and see it as it stood on any date",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [],
+      "outputs": [],
+      "examples": [],
+      "scenarios": [
+        {
+          "id": "R-001/S1",
+          "title": "Find a policy and look at it",
+          "data": "data/policy-PA-1001.json",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Service rep",
+              "does": "Searches for policy number PA-1001",
+              "shouldSee": "One result: PA-1001, Jordan Avery, Tampa, FL, In force",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Opens the policy",
+              "shouldSee": "Term 2026-12-01 to 2027-06-01; drivers Jordan Avery and Riley Avery; vehicles 2021 Toyota Camry and 2018 Honda CR-V; full-term premium $2,220.00",
+              "checks": ""
+            },
+            {
+              "step": "3",
+              "who": "Service rep",
+              "does": "Goes back and searches for the last name \"Avery\"",
+              "shouldSee": "PA-1001 is in the results",
+              "checks": ""
+            }
+          ]
+        },
+        {
+          "id": "R-001/S2",
+          "title": "See the policy as it stood on an earlier date",
+          "data": "data/policy-PA-1001.json, after the change in R-006/S1 has been issued",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Service rep",
+              "does": "Opens PA-1001",
+              "shouldSee": "Three vehicles, including the 2024 Mazda CX-5; a note that this is the policy as of today",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Chooses \"as of\" 2027-03-02",
+              "shouldSee": "Two vehicles; no Mazda; a note \"Viewing as of 2027-03-02\"",
+              "checks": ""
+            },
+            {
+              "step": "3",
+              "who": "Service rep",
+              "does": "Chooses \"as of\" 2027-03-03",
+              "shouldSee": "Three vehicles, including the Mazda",
+              "checks": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R-002",
+      "title": "A mid-term change takes effect on a date inside the term",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "effective_date",
+          "type": "date",
+          "label": "Effective date"
+        },
+        {
+          "key": "policy_status",
+          "type": "enum",
+          "label": "Policy status on that date",
+          "values": ["In force", "Cancelled"]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "decision",
+          "type": "enum",
+          "label": "Decision",
+          "values": ["Allowed", "Not allowed"]
+        },
+        {
+          "key": "reason",
+          "type": "text",
+          "label": "Reason"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-002/E1",
+          "inputs": {
+            "effective_date": {
+              "value": "2027-03-03",
+              "text": "2027-03-03"
+            },
+            "policy_status": {
+              "value": "In force",
+              "text": "In force"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Allowed",
+              "text": "Allowed"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-002/E2",
+          "inputs": {
+            "effective_date": {
+              "value": "2026-12-01",
+              "text": "2026-12-01"
+            },
+            "policy_status": {
+              "value": "In force",
+              "text": "In force"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Allowed",
+              "text": "Allowed"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-002/E3",
+          "inputs": {
+            "effective_date": {
+              "value": "2026-11-30",
+              "text": "2026-11-30"
+            },
+            "policy_status": {
+              "value": "In force",
+              "text": "In force"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Not allowed",
+              "text": "Not allowed"
+            },
+            "reason": {
+              "value": "Before the term starts",
+              "text": "Before the term starts"
+            }
+          }
+        },
+        {
+          "id": "R-002/E4",
+          "inputs": {
+            "effective_date": {
+              "value": "2027-06-01",
+              "text": "2027-06-01"
+            },
+            "policy_status": {
+              "value": "In force",
+              "text": "In force"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Not allowed",
+              "text": "Not allowed"
+            },
+            "reason": {
+              "value": "On or after the expiration date",
+              "text": "On or after the expiration date"
+            }
+          }
+        },
+        {
+          "id": "R-002/E5",
+          "inputs": {
+            "effective_date": {
+              "value": "2027-05-31",
+              "text": "2027-05-31"
+            },
+            "policy_status": {
+              "value": "In force",
+              "text": "In force"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Allowed",
+              "text": "Allowed"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-002/E6",
+          "inputs": {
+            "effective_date": {
+              "value": "2027-03-03",
+              "text": "2027-03-03"
+            },
+            "policy_status": {
+              "value": "Cancelled",
+              "text": "Cancelled"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Not allowed",
+              "text": "Not allowed"
+            },
+            "reason": {
+              "value": "The policy is not in force on that date",
+              "text": "The policy is not in force on that date"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-003",
+      "title": "Count the days left in the term",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "effective_date",
+          "type": "date",
+          "label": "Effective date"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "days_left",
+          "type": "number",
+          "label": "Days left"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-003/E1",
+          "inputs": {
+            "effective_date": {
+              "value": "2027-03-03",
+              "text": "2027-03-03"
+            }
+          },
+          "expected": {
+            "days_left": {
+              "value": 90,
+              "text": "90"
+            }
+          }
+        },
+        {
+          "id": "R-003/E2",
+          "inputs": {
+            "effective_date": {
+              "value": "2026-12-01",
+              "text": "2026-12-01"
+            }
+          },
+          "expected": {
+            "days_left": {
+              "value": 182,
+              "text": "182"
+            }
+          }
+        },
+        {
+          "id": "R-003/E3",
+          "inputs": {
+            "effective_date": {
+              "value": "2027-05-31",
+              "text": "2027-05-31"
+            }
+          },
+          "expected": {
+            "days_left": {
+              "value": 1,
+              "text": "1"
+            }
+          }
+        },
+        {
+          "id": "R-003/E4",
+          "inputs": {
+            "effective_date": {
+              "value": "2027-01-22",
+              "text": "2027-01-22"
+            }
+          },
+          "expected": {
+            "days_left": {
+              "value": 130,
+              "text": "130"
+            }
+          }
+        },
+        {
+          "id": "R-003/E5",
+          "inputs": {
+            "effective_date": {
+              "value": "2027-02-01",
+              "text": "2027-02-01"
+            }
+          },
+          "expected": {
+            "days_left": {
+              "value": 120,
+              "text": "120"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-004",
+      "title": "Charge or return premium in proportion to the days left",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "full_term_change",
+          "type": "money",
+          "label": "Change in full-term premium",
+          "currency": "USD"
+        },
+        {
+          "key": "days_left",
+          "type": "number",
+          "label": "Days left"
+        },
+        {
+          "key": "days_in_term",
+          "type": "number",
+          "label": "Days in term"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "premium_change",
+          "type": "money",
+          "label": "Premium change",
+          "currency": "USD"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-004/E1",
+          "inputs": {
+            "full_term_change": {
+              "value": 1060,
+              "text": "$1,060.00"
+            },
+            "days_left": {
+              "value": 90,
+              "text": "90"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "premium_change": {
+              "value": 524.18,
+              "text": "$524.18"
+            }
+          }
+        },
+        {
+          "id": "R-004/E2",
+          "inputs": {
+            "full_term_change": {
+              "value": -980,
+              "text": "-$980.00"
+            },
+            "days_left": {
+              "value": 120,
+              "text": "120"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "premium_change": {
+              "value": -646.15,
+              "text": "-$646.15"
+            }
+          }
+        },
+        {
+          "id": "R-004/E3",
+          "inputs": {
+            "full_term_change": {
+              "value": 45.5,
+              "text": "$45.50"
+            },
+            "days_left": {
+              "value": 75,
+              "text": "75"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "premium_change": {
+              "value": 18.75,
+              "text": "$18.75"
+            }
+          }
+        },
+        {
+          "id": "R-004/E4",
+          "inputs": {
+            "full_term_change": {
+              "value": -297.36,
+              "text": "-$297.36"
+            },
+            "days_left": {
+              "value": 130,
+              "text": "130"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "premium_change": {
+              "value": -212.4,
+              "text": "-$212.40"
+            }
+          }
+        },
+        {
+          "id": "R-004/E5",
+          "inputs": {
+            "full_term_change": {
+              "value": 100.01,
+              "text": "$100.01"
+            },
+            "days_left": {
+              "value": 91,
+              "text": "91"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "premium_change": {
+              "value": 50.01,
+              "text": "$50.01"
+            }
+          }
+        },
+        {
+          "id": "R-004/E6",
+          "inputs": {
+            "full_term_change": {
+              "value": -100.01,
+              "text": "-$100.01"
+            },
+            "days_left": {
+              "value": 91,
+              "text": "91"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "premium_change": {
+              "value": -50.01,
+              "text": "-$50.01"
+            }
+          }
+        },
+        {
+          "id": "R-004/E7",
+          "inputs": {
+            "full_term_change": {
+              "value": 1060,
+              "text": "$1,060.00"
+            },
+            "days_left": {
+              "value": 182,
+              "text": "182"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "premium_change": {
+              "value": 1060,
+              "text": "$1,060.00"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-005",
+      "title": "Show what a change will cost before it is issued",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [],
+      "outputs": [],
+      "examples": [],
+      "scenarios": [
+        {
+          "id": "R-005/S1",
+          "title": "A policyholder adds a newly bought car mid-term",
+          "data": "data/policy-PA-1001.json. The call is on 2027-03-04.",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Policyholder",
+              "does": "Calls to add a 2024 Mazda CX-5 bought yesterday",
+              "shouldSee": "",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Finds PA-1001 and starts an \"Add vehicle\" change effective 2027-03-03",
+              "shouldSee": "90 of 182 days left in the term",
+              "checks": "example: R-003/E1"
+            },
+            {
+              "step": "3",
+              "who": "Service rep",
+              "does": "Enters the vehicle",
+              "shouldSee": "Full-term premium for the Mazda: $1,060.00",
+              "checks": ""
+            },
+            {
+              "step": "4",
+              "who": "System",
+              "does": "Quotes the change",
+              "shouldSee": "Additional premium $524.18 for the rest of the term; new full-term premium $3,280.00; no approval needed; no statement of no loss needed",
+              "checks": "example: R-004/E1"
+            },
+            {
+              "step": "5",
+              "who": "Service rep",
+              "does": "Saves the quote and closes it without issuing",
+              "shouldSee": "The policy is unchanged: two vehicles, version 1",
+              "checks": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R-006",
+      "title": "Issuing a change creates a new version and keeps the old one",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [],
+      "outputs": [],
+      "examples": [],
+      "scenarios": [
+        {
+          "id": "R-006/S1",
+          "title": "Issue the added car",
+          "data": "data/policy-PA-1001.json, with the quote saved in R-005/S1. The date is 2027-03-04.",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Service rep",
+              "does": "Opens the saved quote and issues the change",
+              "shouldSee": "Confirmation that the change is issued",
+              "checks": "decision = Process"
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Looks at the policy",
+              "shouldSee": "Three vehicles, including the 2024 Mazda CX-5; full-term premium $3,280.00",
+              "checks": ""
+            },
+            {
+              "step": "3",
+              "who": "Service rep",
+              "does": "Looks at the policy's versions",
+              "shouldSee": "Version 2: Add vehicle, effective 2027-03-03, entered 2027-03-04. Version 1: New business, effective 2026-12-01",
+              "checks": ""
+            },
+            {
+              "step": "4",
+              "who": "Service rep",
+              "does": "Opens version 1",
+              "shouldSee": "Two vehicles; marked as an earlier version; it cannot be edited",
+              "checks": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R-007",
+      "title": "Backdated changes need a supervisor's approval",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "change_type",
+          "type": "enum",
+          "label": "Change",
+          "values": [
+            "Add vehicle",
+            "Remove vehicle",
+            "Add driver",
+            "Remove driver",
+            "Change address"
+          ]
+        },
+        {
+          "key": "days_backdated",
+          "type": "number",
+          "label": "Days backdated"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "decision",
+          "type": "enum",
+          "label": "Decision",
+          "values": ["Process", "Send for approval"]
+        },
+        {
+          "key": "reason",
+          "type": "text",
+          "label": "Reason"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-007/E1",
+          "inputs": {
+            "change_type": {
+              "value": "Remove driver",
+              "text": "Remove driver"
+            },
+            "days_backdated": {
+              "value": 45,
+              "text": "45"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Send for approval",
+              "text": "Send for approval"
+            },
+            "reason": {
+              "value": "Backdated more than 30 days",
+              "text": "Backdated more than 30 days"
+            }
+          }
+        },
+        {
+          "id": "R-007/E2",
+          "inputs": {
+            "change_type": {
+              "value": "Add vehicle",
+              "text": "Add vehicle"
+            },
+            "days_backdated": {
+              "value": 30,
+              "text": "30"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Process",
+              "text": "Process"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-007/E3",
+          "inputs": {
+            "change_type": {
+              "value": "Add vehicle",
+              "text": "Add vehicle"
+            },
+            "days_backdated": {
+              "value": 31,
+              "text": "31"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Send for approval",
+              "text": "Send for approval"
+            },
+            "reason": {
+              "value": "Backdated more than 30 days",
+              "text": "Backdated more than 30 days"
+            }
+          }
+        },
+        {
+          "id": "R-007/E4",
+          "inputs": {
+            "change_type": {
+              "value": "Change address",
+              "text": "Change address"
+            },
+            "days_backdated": {
+              "value": 0,
+              "text": "0"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Process",
+              "text": "Process"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-007/E5",
+          "inputs": {
+            "change_type": {
+              "value": "Remove vehicle",
+              "text": "Remove vehicle"
+            },
+            "days_backdated": {
+              "value": -10,
+              "text": "-10"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Process",
+              "text": "Process"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-008",
+      "title": "Backdated additions need a statement of no loss",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "change_type",
+          "type": "enum",
+          "label": "Change",
+          "values": [
+            "Add vehicle",
+            "Remove vehicle",
+            "Add driver",
+            "Remove driver",
+            "Change address"
+          ]
+        },
+        {
+          "key": "days_backdated",
+          "type": "number",
+          "label": "Days backdated"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "statement_needed",
+          "type": "enum",
+          "label": "Statement of no loss needed",
+          "values": ["Yes", "No"]
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-008/E1",
+          "inputs": {
+            "change_type": {
+              "value": "Add vehicle",
+              "text": "Add vehicle"
+            },
+            "days_backdated": {
+              "value": 1,
+              "text": "1"
+            }
+          },
+          "expected": {
+            "statement_needed": {
+              "value": "No",
+              "text": "No"
+            }
+          }
+        },
+        {
+          "id": "R-008/E2",
+          "inputs": {
+            "change_type": {
+              "value": "Add vehicle",
+              "text": "Add vehicle"
+            },
+            "days_backdated": {
+              "value": 3,
+              "text": "3"
+            }
+          },
+          "expected": {
+            "statement_needed": {
+              "value": "No",
+              "text": "No"
+            }
+          }
+        },
+        {
+          "id": "R-008/E3",
+          "inputs": {
+            "change_type": {
+              "value": "Add vehicle",
+              "text": "Add vehicle"
+            },
+            "days_backdated": {
+              "value": 4,
+              "text": "4"
+            }
+          },
+          "expected": {
+            "statement_needed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        },
+        {
+          "id": "R-008/E4",
+          "inputs": {
+            "change_type": {
+              "value": "Add driver",
+              "text": "Add driver"
+            },
+            "days_backdated": {
+              "value": 10,
+              "text": "10"
+            }
+          },
+          "expected": {
+            "statement_needed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        },
+        {
+          "id": "R-008/E5",
+          "inputs": {
+            "change_type": {
+              "value": "Remove vehicle",
+              "text": "Remove vehicle"
+            },
+            "days_backdated": {
+              "value": 20,
+              "text": "20"
+            }
+          },
+          "expected": {
+            "statement_needed": {
+              "value": "No",
+              "text": "No"
+            }
+          }
+        },
+        {
+          "id": "R-008/E6",
+          "inputs": {
+            "change_type": {
+              "value": "Change address",
+              "text": "Change address"
+            },
+            "days_backdated": {
+              "value": 20,
+              "text": "20"
+            }
+          },
+          "expected": {
+            "statement_needed": {
+              "value": "No",
+              "text": "No"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-009",
+      "title": "Large return premiums need a supervisor's approval",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "premium_change",
+          "type": "money",
+          "label": "Premium change",
+          "currency": "USD"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "decision",
+          "type": "enum",
+          "label": "Decision",
+          "values": ["Process", "Send for approval"]
+        },
+        {
+          "key": "reason",
+          "type": "text",
+          "label": "Reason"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-009/E1",
+          "inputs": {
+            "premium_change": {
+              "value": -646.15,
+              "text": "-$646.15"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Send for approval",
+              "text": "Send for approval"
+            },
+            "reason": {
+              "value": "Return premium over $500",
+              "text": "Return premium over $500"
+            }
+          }
+        },
+        {
+          "id": "R-009/E2",
+          "inputs": {
+            "premium_change": {
+              "value": -500,
+              "text": "-$500.00"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Process",
+              "text": "Process"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-009/E3",
+          "inputs": {
+            "premium_change": {
+              "value": -500.01,
+              "text": "-$500.01"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Send for approval",
+              "text": "Send for approval"
+            },
+            "reason": {
+              "value": "Return premium over $500",
+              "text": "Return premium over $500"
+            }
+          }
+        },
+        {
+          "id": "R-009/E4",
+          "inputs": {
+            "premium_change": {
+              "value": -212.4,
+              "text": "-$212.40"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Process",
+              "text": "Process"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-009/E5",
+          "inputs": {
+            "premium_change": {
+              "value": 524.18,
+              "text": "$524.18"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Process",
+              "text": "Process"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-010",
+      "title": "A supervisor approves or declines a change sent for approval",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "change_type",
+          "type": "enum",
+          "label": "Change",
+          "values": [
+            "Add vehicle",
+            "Remove vehicle",
+            "Add driver",
+            "Remove driver",
+            "Change address"
+          ]
+        },
+        {
+          "key": "days_backdated",
+          "type": "number",
+          "label": "Days backdated"
+        },
+        {
+          "key": "premium_change",
+          "type": "money",
+          "label": "Premium change",
+          "currency": "USD"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "decision",
+          "type": "enum",
+          "label": "Decision",
+          "values": ["Process", "Send for approval"]
+        },
+        {
+          "key": "reasons",
+          "type": "text",
+          "label": "Reasons"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-010/E1",
+          "inputs": {
+            "change_type": {
+              "value": "Remove vehicle",
+              "text": "Remove vehicle"
+            },
+            "days_backdated": {
+              "value": 45,
+              "text": "45"
+            },
+            "premium_change": {
+              "value": -646.15,
+              "text": "-$646.15"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Send for approval",
+              "text": "Send for approval"
+            },
+            "reasons": {
+              "value": "Backdated more than 30 days; Return premium over $500",
+              "text": "Backdated more than 30 days; Return premium over $500"
+            }
+          }
+        },
+        {
+          "id": "R-010/E2",
+          "inputs": {
+            "change_type": {
+              "value": "Remove driver",
+              "text": "Remove driver"
+            },
+            "days_backdated": {
+              "value": 45,
+              "text": "45"
+            },
+            "premium_change": {
+              "value": -212.4,
+              "text": "-$212.40"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Send for approval",
+              "text": "Send for approval"
+            },
+            "reasons": {
+              "value": "Backdated more than 30 days",
+              "text": "Backdated more than 30 days"
+            }
+          }
+        },
+        {
+          "id": "R-010/E3",
+          "inputs": {
+            "change_type": {
+              "value": "Remove vehicle",
+              "text": "Remove vehicle"
+            },
+            "days_backdated": {
+              "value": 0,
+              "text": "0"
+            },
+            "premium_change": {
+              "value": -646.15,
+              "text": "-$646.15"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Send for approval",
+              "text": "Send for approval"
+            },
+            "reasons": {
+              "value": "Return premium over $500",
+              "text": "Return premium over $500"
+            }
+          }
+        },
+        {
+          "id": "R-010/E4",
+          "inputs": {
+            "change_type": {
+              "value": "Add vehicle",
+              "text": "Add vehicle"
+            },
+            "days_backdated": {
+              "value": 1,
+              "text": "1"
+            },
+            "premium_change": {
+              "value": 524.18,
+              "text": "$524.18"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Process",
+              "text": "Process"
+            },
+            "reasons": {
+              "value": null,
+              "text": ""
+            }
+          }
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "R-010/S1",
+          "title": "A backdated driver removal is approved",
+          "data": "data/policy-PA-1001.json. The request is on 2027-03-08.",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Policyholder",
+              "does": "Calls to say Riley Avery moved out on 2027-01-22",
+              "shouldSee": "",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Starts a \"Remove driver\" change effective 2027-01-22",
+              "shouldSee": "130 days left; backdated 45 days",
+              "checks": "example: R-003/E4"
+            },
+            {
+              "step": "3",
+              "who": "System",
+              "does": "Quotes the change",
+              "shouldSee": "Return premium $212.40; \"Needs a supervisor's approval: Backdated more than 30 days\"; no button to issue",
+              "checks": "example: R-010/E2"
+            },
+            {
+              "step": "4",
+              "who": "Service rep",
+              "does": "Sends it for approval with a note",
+              "shouldSee": "Status \"Waiting for approval\"",
+              "checks": ""
+            },
+            {
+              "step": "5",
+              "who": "Supervisor",
+              "does": "Opens the approval list",
+              "shouldSee": "The change, with the policy number, the reason, the return premium, who sent it and when",
+              "checks": ""
+            },
+            {
+              "step": "6",
+              "who": "Supervisor",
+              "does": "Approves",
+              "shouldSee": "The change is issued as a new version; the history shows who approved it and when",
+              "checks": ""
+            }
+          ]
+        },
+        {
+          "id": "R-010/S2",
+          "title": "A supervisor declines",
+          "data": "as S1, up to step 5.",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Supervisor",
+              "does": "Declines without giving a reason",
+              "shouldSee": "A message that a reason is required",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Supervisor",
+              "does": "Declines with the reason \"Need proof of the move-out date\"",
+              "shouldSee": "The change leaves the approval list",
+              "checks": ""
+            },
+            {
+              "step": "3",
+              "who": "Service rep",
+              "does": "Opens the change",
+              "shouldSee": "Status \"Declined\", with the supervisor's reason; the policy still lists Riley Avery",
+              "checks": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R-011",
+      "title": "A change dated before an earlier change re-prices that change",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "change_full_term",
+          "type": "money",
+          "label": "Change in full-term premium",
+          "currency": "USD"
+        },
+        {
+          "key": "days_left",
+          "type": "number",
+          "label": "Days left at the change"
+        },
+        {
+          "key": "later_old",
+          "type": "money",
+          "label": "Later change - full-term premium before",
+          "currency": "USD"
+        },
+        {
+          "key": "later_new",
+          "type": "money",
+          "label": "Later change - full-term premium after",
+          "currency": "USD"
+        },
+        {
+          "key": "later_days_left",
+          "type": "number",
+          "label": "Days left at the later change"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "change_premium",
+          "type": "money",
+          "label": "Premium for the change",
+          "currency": "USD"
+        },
+        {
+          "key": "repricing",
+          "type": "money",
+          "label": "Re-pricing of the later change",
+          "currency": "USD"
+        },
+        {
+          "key": "total",
+          "type": "money",
+          "label": "Total",
+          "currency": "USD"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-011/E1",
+          "inputs": {
+            "change_full_term": {
+              "value": 45.5,
+              "text": "$45.50"
+            },
+            "days_left": {
+              "value": 120,
+              "text": "120"
+            },
+            "later_old": {
+              "value": 1060,
+              "text": "$1,060.00"
+            },
+            "later_new": {
+              "value": 1080,
+              "text": "$1,080.00"
+            },
+            "later_days_left": {
+              "value": 90,
+              "text": "90"
+            }
+          },
+          "expected": {
+            "change_premium": {
+              "value": 30,
+              "text": "$30.00"
+            },
+            "repricing": {
+              "value": 9.89,
+              "text": "$9.89"
+            },
+            "total": {
+              "value": 39.89,
+              "text": "$39.89"
+            }
+          }
+        },
+        {
+          "id": "R-011/E2",
+          "inputs": {
+            "change_full_term": {
+              "value": 45.5,
+              "text": "$45.50"
+            },
+            "days_left": {
+              "value": 120,
+              "text": "120"
+            },
+            "later_old": {
+              "value": 1060,
+              "text": "$1,060.00"
+            },
+            "later_new": {
+              "value": 1060,
+              "text": "$1,060.00"
+            },
+            "later_days_left": {
+              "value": 90,
+              "text": "90"
+            }
+          },
+          "expected": {
+            "change_premium": {
+              "value": 30,
+              "text": "$30.00"
+            },
+            "repricing": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "total": {
+              "value": 30,
+              "text": "$30.00"
+            }
+          }
+        },
+        {
+          "id": "R-011/E3",
+          "inputs": {
+            "change_full_term": {
+              "value": -297.36,
+              "text": "-$297.36"
+            },
+            "days_left": {
+              "value": 130,
+              "text": "130"
+            },
+            "later_old": {
+              "value": 1060,
+              "text": "$1,060.00"
+            },
+            "later_new": {
+              "value": 1040,
+              "text": "$1,040.00"
+            },
+            "later_days_left": {
+              "value": 90,
+              "text": "90"
+            }
+          },
+          "expected": {
+            "change_premium": {
+              "value": -212.4,
+              "text": "-$212.40"
+            },
+            "repricing": {
+              "value": -9.89,
+              "text": "-$9.89"
+            },
+            "total": {
+              "value": -222.29,
+              "text": "-$222.29"
+            }
+          }
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "R-011/S1",
+          "title": "An address change dated before an added car",
+          "data": "data/policy-PA-1001.json, after R-006/S1 (the Mazda was added effective 2027-03-03). The request is on 2027-03-10.",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Policyholder",
+              "does": "Calls to say they moved on 2027-02-01",
+              "shouldSee": "",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Starts a \"Change address\" change effective 2027-02-01",
+              "shouldSee": "A warning: \"This change is dated before a change already made: Add vehicle, effective 2027-03-03. That change will be priced again.\"",
+              "checks": ""
+            },
+            {
+              "step": "3",
+              "who": "System",
+              "does": "Quotes the change",
+              "shouldSee": "$30.00 for the change, $9.89 to re-price the added vehicle, total $39.89; \"Needs a supervisor's approval: Backdated more than 30 days\"",
+              "checks": "example: R-011/E1"
+            },
+            {
+              "step": "4",
+              "who": "Supervisor",
+              "does": "Approves (R-010)",
+              "shouldSee": "The change is issued",
+              "checks": ""
+            },
+            {
+              "step": "5",
+              "who": "Service rep",
+              "does": "Views the policy as of 2027-02-01, then as of 2027-03-03",
+              "shouldSee": "2027-02-01: the new address, two vehicles. 2027-03-03: the new address, three vehicles, the Mazda at $1,080.00 for the full term",
+              "checks": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R-012",
+      "title": "Each change produces the right documents",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "change_type",
+          "type": "enum",
+          "label": "Change",
+          "values": [
+            "Add vehicle",
+            "Remove vehicle",
+            "Add driver",
+            "Remove driver",
+            "Change address"
+          ]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "declarations_page",
+          "type": "enum",
+          "label": "New declarations page",
+          "values": ["Yes", "No"]
+        },
+        {
+          "key": "id_cards",
+          "type": "enum",
+          "label": "New ID cards",
+          "values": ["None", "New vehicle only", "All vehicles"]
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-012/E1",
+          "inputs": {
+            "change_type": {
+              "value": "Add vehicle",
+              "text": "Add vehicle"
+            }
+          },
+          "expected": {
+            "declarations_page": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "id_cards": {
+              "value": "New vehicle only",
+              "text": "New vehicle only"
+            }
+          }
+        },
+        {
+          "id": "R-012/E2",
+          "inputs": {
+            "change_type": {
+              "value": "Remove vehicle",
+              "text": "Remove vehicle"
+            }
+          },
+          "expected": {
+            "declarations_page": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "id_cards": {
+              "value": "None",
+              "text": "None"
+            }
+          }
+        },
+        {
+          "id": "R-012/E3",
+          "inputs": {
+            "change_type": {
+              "value": "Add driver",
+              "text": "Add driver"
+            }
+          },
+          "expected": {
+            "declarations_page": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "id_cards": {
+              "value": "None",
+              "text": "None"
+            }
+          }
+        },
+        {
+          "id": "R-012/E4",
+          "inputs": {
+            "change_type": {
+              "value": "Remove driver",
+              "text": "Remove driver"
+            }
+          },
+          "expected": {
+            "declarations_page": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "id_cards": {
+              "value": "None",
+              "text": "None"
+            }
+          }
+        },
+        {
+          "id": "R-012/E5",
+          "inputs": {
+            "change_type": {
+              "value": "Change address",
+              "text": "Change address"
+            }
+          },
+          "expected": {
+            "declarations_page": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "id_cards": {
+              "value": "All vehicles",
+              "text": "All vehicles"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-013",
+      "title": "Spread a premium change over the installments still to come",
+      "milestone": "M1",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "premium_change",
+          "type": "money",
+          "label": "Premium change",
+          "currency": "USD"
+        },
+        {
+          "key": "installments_left",
+          "type": "number",
+          "label": "Installments left"
+        },
+        {
+          "key": "installment_amount",
+          "type": "money",
+          "label": "Installment amount",
+          "currency": "USD"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "first_change",
+          "type": "money",
+          "label": "Change to the next installment",
+          "currency": "USD"
+        },
+        {
+          "key": "last_change",
+          "type": "money",
+          "label": "Change to the last installment",
+          "currency": "USD"
+        },
+        {
+          "key": "billed_now",
+          "type": "money",
+          "label": "Billed now",
+          "currency": "USD"
+        },
+        {
+          "key": "refund",
+          "type": "money",
+          "label": "Refund",
+          "currency": "USD"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-013/E1",
+          "inputs": {
+            "premium_change": {
+              "value": 524.18,
+              "text": "$524.18"
+            },
+            "installments_left": {
+              "value": 2,
+              "text": "2"
+            },
+            "installment_amount": {
+              "value": 370,
+              "text": "$370.00"
+            }
+          },
+          "expected": {
+            "first_change": {
+              "value": 262.09,
+              "text": "$262.09"
+            },
+            "last_change": {
+              "value": 262.09,
+              "text": "$262.09"
+            },
+            "billed_now": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "refund": {
+              "value": 0,
+              "text": "$0.00"
+            }
+          }
+        },
+        {
+          "id": "R-013/E2",
+          "inputs": {
+            "premium_change": {
+              "value": 524.18,
+              "text": "$524.18"
+            },
+            "installments_left": {
+              "value": 3,
+              "text": "3"
+            },
+            "installment_amount": {
+              "value": 370,
+              "text": "$370.00"
+            }
+          },
+          "expected": {
+            "first_change": {
+              "value": 174.73,
+              "text": "$174.73"
+            },
+            "last_change": {
+              "value": 174.72,
+              "text": "$174.72"
+            },
+            "billed_now": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "refund": {
+              "value": 0,
+              "text": "$0.00"
+            }
+          }
+        },
+        {
+          "id": "R-013/E3",
+          "inputs": {
+            "premium_change": {
+              "value": 30,
+              "text": "$30.00"
+            },
+            "installments_left": {
+              "value": 4,
+              "text": "4"
+            },
+            "installment_amount": {
+              "value": 370,
+              "text": "$370.00"
+            }
+          },
+          "expected": {
+            "first_change": {
+              "value": 7.5,
+              "text": "$7.50"
+            },
+            "last_change": {
+              "value": 7.5,
+              "text": "$7.50"
+            },
+            "billed_now": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "refund": {
+              "value": 0,
+              "text": "$0.00"
+            }
+          }
+        },
+        {
+          "id": "R-013/E4",
+          "inputs": {
+            "premium_change": {
+              "value": 524.18,
+              "text": "$524.18"
+            },
+            "installments_left": {
+              "value": 0,
+              "text": "0"
+            },
+            "installment_amount": {
+              "value": 370,
+              "text": "$370.00"
+            }
+          },
+          "expected": {
+            "first_change": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "last_change": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "billed_now": {
+              "value": 524.18,
+              "text": "$524.18"
+            },
+            "refund": {
+              "value": 0,
+              "text": "$0.00"
+            }
+          }
+        },
+        {
+          "id": "R-013/E5",
+          "inputs": {
+            "premium_change": {
+              "value": -646.15,
+              "text": "-$646.15"
+            },
+            "installments_left": {
+              "value": 3,
+              "text": "3"
+            },
+            "installment_amount": {
+              "value": 370,
+              "text": "$370.00"
+            }
+          },
+          "expected": {
+            "first_change": {
+              "value": -215.39,
+              "text": "-$215.39"
+            },
+            "last_change": {
+              "value": -215.38,
+              "text": "-$215.38"
+            },
+            "billed_now": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "refund": {
+              "value": 0,
+              "text": "$0.00"
+            }
+          }
+        },
+        {
+          "id": "R-013/E6",
+          "inputs": {
+            "premium_change": {
+              "value": -212.4,
+              "text": "-$212.40"
+            },
+            "installments_left": {
+              "value": 0,
+              "text": "0"
+            },
+            "installment_amount": {
+              "value": 370,
+              "text": "$370.00"
+            }
+          },
+          "expected": {
+            "first_change": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "last_change": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "billed_now": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "refund": {
+              "value": 212.4,
+              "text": "$212.40"
+            }
+          }
+        },
+        {
+          "id": "R-013/E7",
+          "inputs": {
+            "premium_change": {
+              "value": -646.15,
+              "text": "-$646.15"
+            },
+            "installments_left": {
+              "value": 1,
+              "text": "1"
+            },
+            "installment_amount": {
+              "value": 370,
+              "text": "$370.00"
+            }
+          },
+          "expected": {
+            "first_change": {
+              "value": -370,
+              "text": "-$370.00"
+            },
+            "last_change": {
+              "value": -370,
+              "text": "-$370.00"
+            },
+            "billed_now": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "refund": {
+              "value": 276.15,
+              "text": "$276.15"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-014",
+      "title": "Cancel a policy at the policyholder's request",
+      "milestone": "M2",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "full_term_premium",
+          "type": "money",
+          "label": "Full-term premium",
+          "currency": "USD"
+        },
+        {
+          "key": "days_left",
+          "type": "number",
+          "label": "Days left"
+        },
+        {
+          "key": "premium_paid",
+          "type": "money",
+          "label": "Premium paid so far",
+          "currency": "USD"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "unearned_premium",
+          "type": "money",
+          "label": "Unused premium",
+          "currency": "USD"
+        },
+        {
+          "key": "refund",
+          "type": "money",
+          "label": "Refund",
+          "currency": "USD"
+        },
+        {
+          "key": "balance_owed",
+          "type": "money",
+          "label": "Still owed",
+          "currency": "USD"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-014/E1",
+          "inputs": {
+            "full_term_premium": {
+              "value": 2220,
+              "text": "$2,220.00"
+            },
+            "days_left": {
+              "value": 90,
+              "text": "90"
+            },
+            "premium_paid": {
+              "value": 1480,
+              "text": "$1,480.00"
+            }
+          },
+          "expected": {
+            "unearned_premium": {
+              "value": 1097.8,
+              "text": "$1,097.80"
+            },
+            "refund": {
+              "value": 357.8,
+              "text": "$357.80"
+            },
+            "balance_owed": {
+              "value": 0,
+              "text": "$0.00"
+            }
+          }
+        },
+        {
+          "id": "R-014/E2",
+          "inputs": {
+            "full_term_premium": {
+              "value": 2220,
+              "text": "$2,220.00"
+            },
+            "days_left": {
+              "value": 90,
+              "text": "90"
+            },
+            "premium_paid": {
+              "value": 1110,
+              "text": "$1,110.00"
+            }
+          },
+          "expected": {
+            "unearned_premium": {
+              "value": 1097.8,
+              "text": "$1,097.80"
+            },
+            "refund": {
+              "value": 0,
+              "text": "$0.00"
+            },
+            "balance_owed": {
+              "value": 12.2,
+              "text": "$12.20"
+            }
+          }
+        },
+        {
+          "id": "R-014/E3",
+          "inputs": {
+            "full_term_premium": {
+              "value": 2220,
+              "text": "$2,220.00"
+            },
+            "days_left": {
+              "value": 182,
+              "text": "182"
+            },
+            "premium_paid": {
+              "value": 370,
+              "text": "$370.00"
+            }
+          },
+          "expected": {
+            "unearned_premium": {
+              "value": 2220,
+              "text": "$2,220.00"
+            },
+            "refund": {
+              "value": 370,
+              "text": "$370.00"
+            },
+            "balance_owed": {
+              "value": 0,
+              "text": "$0.00"
+            }
+          }
+        },
+        {
+          "id": "R-014/E4",
+          "inputs": {
+            "full_term_premium": {
+              "value": 2220,
+              "text": "$2,220.00"
+            },
+            "days_left": {
+              "value": 1,
+              "text": "1"
+            },
+            "premium_paid": {
+              "value": 2220,
+              "text": "$2,220.00"
+            }
+          },
+          "expected": {
+            "unearned_premium": {
+              "value": 12.2,
+              "text": "$12.20"
+            },
+            "refund": {
+              "value": 12.2,
+              "text": "$12.20"
+            },
+            "balance_owed": {
+              "value": 0,
+              "text": "$0.00"
+            }
+          }
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "R-014/S1",
+          "title": "A policyholder cancels because they sold their cars",
+          "data": "data/policy-PA-1001.json. The call is on 2027-03-03; four installments ($1,480.00) are paid.",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Policyholder",
+              "does": "Calls to cancel from today",
+              "shouldSee": "",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Finds PA-1001 and starts a cancellation at the policyholder's request, effective 2027-03-03",
+              "shouldSee": "90 of 182 days left",
+              "checks": "example: R-003/E1"
+            },
+            {
+              "step": "3",
+              "who": "System",
+              "does": "Shows the result before anything is done",
+              "shouldSee": "Unused premium $1,097.80; refund $357.80",
+              "checks": "example: R-014/E1"
+            },
+            {
+              "step": "4",
+              "who": "Service rep",
+              "does": "Confirms",
+              "shouldSee": "Status \"Cancelled\", effective 2027-03-03; a cancellation confirmation ready to send; the unpaid installments are removed",
+              "checks": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R-015",
+      "title": "Notice before cancelling for nonpayment depends on the state",
+      "milestone": "M2",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "state",
+          "type": "enum",
+          "label": "State",
+          "values": ["CA", "FL", "NY", "TX"]
+        },
+        {
+          "key": "mailed",
+          "type": "date",
+          "label": "Notice mailed"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "notice_days",
+          "type": "number",
+          "label": "Days of notice"
+        },
+        {
+          "key": "earliest_date",
+          "type": "date",
+          "label": "Earliest cancellation date"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-015/E1",
+          "inputs": {
+            "state": {
+              "value": "FL",
+              "text": "FL"
+            },
+            "mailed": {
+              "value": "2027-02-10",
+              "text": "2027-02-10"
+            }
+          },
+          "expected": {
+            "notice_days": {
+              "value": 10,
+              "text": "10"
+            },
+            "earliest_date": {
+              "value": "2027-02-20",
+              "text": "2027-02-20"
+            }
+          }
+        },
+        {
+          "id": "R-015/E2",
+          "inputs": {
+            "state": {
+              "value": "CA",
+              "text": "CA"
+            },
+            "mailed": {
+              "value": "2027-02-10",
+              "text": "2027-02-10"
+            }
+          },
+          "expected": {
+            "notice_days": {
+              "value": 10,
+              "text": "10"
+            },
+            "earliest_date": {
+              "value": "2027-02-20",
+              "text": "2027-02-20"
+            }
+          }
+        },
+        {
+          "id": "R-015/E3",
+          "inputs": {
+            "state": {
+              "value": "NY",
+              "text": "NY"
+            },
+            "mailed": {
+              "value": "2027-02-10",
+              "text": "2027-02-10"
+            }
+          },
+          "expected": {
+            "notice_days": {
+              "value": 15,
+              "text": "15"
+            },
+            "earliest_date": {
+              "value": "2027-02-25",
+              "text": "2027-02-25"
+            }
+          }
+        },
+        {
+          "id": "R-015/E4",
+          "inputs": {
+            "state": {
+              "value": "TX",
+              "text": "TX"
+            },
+            "mailed": {
+              "value": "2027-02-10",
+              "text": "2027-02-10"
+            }
+          },
+          "expected": {
+            "notice_days": {
+              "value": 10,
+              "text": "10"
+            },
+            "earliest_date": {
+              "value": "2027-02-20",
+              "text": "2027-02-20"
+            }
+          }
+        },
+        {
+          "id": "R-015/E5",
+          "inputs": {
+            "state": {
+              "value": "NY",
+              "text": "NY"
+            },
+            "mailed": {
+              "value": "2027-02-14",
+              "text": "2027-02-14"
+            }
+          },
+          "expected": {
+            "notice_days": {
+              "value": 15,
+              "text": "15"
+            },
+            "earliest_date": {
+              "value": "2027-03-01",
+              "text": "2027-03-01"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-016",
+      "title": "Notice before the company cancels for another reason depends on the state",
+      "milestone": "M2",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "state",
+          "type": "enum",
+          "label": "State",
+          "values": ["CA", "FL", "NY", "TX"]
+        },
+        {
+          "key": "reason",
+          "type": "enum",
+          "label": "Reason",
+          "values": ["Material misrepresentation or fraud", "Driver's license suspended or revoked"]
+        },
+        {
+          "key": "mailed",
+          "type": "date",
+          "label": "Notice mailed"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "notice_days",
+          "type": "number",
+          "label": "Days of notice"
+        },
+        {
+          "key": "earliest_date",
+          "type": "date",
+          "label": "Earliest cancellation date"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-016/E1",
+          "inputs": {
+            "state": {
+              "value": "FL",
+              "text": "FL"
+            },
+            "reason": {
+              "value": "Material misrepresentation or fraud",
+              "text": "Material misrepresentation or fraud"
+            },
+            "mailed": {
+              "value": "2027-02-10",
+              "text": "2027-02-10"
+            }
+          },
+          "expected": {
+            "notice_days": {
+              "value": 45,
+              "text": "45"
+            },
+            "earliest_date": {
+              "value": "2027-03-27",
+              "text": "2027-03-27"
+            }
+          }
+        },
+        {
+          "id": "R-016/E2",
+          "inputs": {
+            "state": {
+              "value": "CA",
+              "text": "CA"
+            },
+            "reason": {
+              "value": "Driver's license suspended or revoked",
+              "text": "Driver's license suspended or revoked"
+            },
+            "mailed": {
+              "value": "2027-02-10",
+              "text": "2027-02-10"
+            }
+          },
+          "expected": {
+            "notice_days": {
+              "value": 20,
+              "text": "20"
+            },
+            "earliest_date": {
+              "value": "2027-03-02",
+              "text": "2027-03-02"
+            }
+          }
+        },
+        {
+          "id": "R-016/E3",
+          "inputs": {
+            "state": {
+              "value": "NY",
+              "text": "NY"
+            },
+            "reason": {
+              "value": "Material misrepresentation or fraud",
+              "text": "Material misrepresentation or fraud"
+            },
+            "mailed": {
+              "value": "2027-02-10",
+              "text": "2027-02-10"
+            }
+          },
+          "expected": {
+            "notice_days": {
+              "value": 20,
+              "text": "20"
+            },
+            "earliest_date": {
+              "value": "2027-03-02",
+              "text": "2027-03-02"
+            }
+          }
+        },
+        {
+          "id": "R-016/E4",
+          "inputs": {
+            "state": {
+              "value": "TX",
+              "text": "TX"
+            },
+            "reason": {
+              "value": "Driver's license suspended or revoked",
+              "text": "Driver's license suspended or revoked"
+            },
+            "mailed": {
+              "value": "2027-02-10",
+              "text": "2027-02-10"
+            }
+          },
+          "expected": {
+            "notice_days": {
+              "value": 10,
+              "text": "10"
+            },
+            "earliest_date": {
+              "value": "2027-02-20",
+              "text": "2027-02-20"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-017",
+      "title": "A cancellation notice says why, when and how to stop it",
+      "milestone": "M2",
+      "status": "active",
+      "inputs": [],
+      "outputs": [],
+      "examples": [],
+      "scenarios": [
+        {
+          "id": "R-017/S1",
+          "title": "A notice for a missed installment in New York",
+          "data": "data/policy-PA-1002.json. The $370.00 installment due 2027-02-01 was not paid. The date is 2027-02-10.",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Service rep",
+              "does": "Opens PA-1002",
+              "shouldSee": "The installment due 2027-02-01 marked \"Overdue\"; amount due $370.00",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Starts a cancellation for nonpayment",
+              "shouldSee": "Earliest cancellation date 2027-02-25 (15 days of notice in New York)",
+              "checks": "example: R-015/E3"
+            },
+            {
+              "step": "3",
+              "who": "System",
+              "does": "Prepares the notice",
+              "shouldSee": "Policy PA-1002; Morgan Ellis, 27 Larch Street, Albany, NY 12203; reason \"Nonpayment of premium\"; amount due $370.00; cancellation at 12:01 a.m. on 2027-02-25; a sentence that paying $370.00 before that date keeps the policy in force",
+              "checks": ""
+            },
+            {
+              "step": "4",
+              "who": "Service rep",
+              "does": "Marks the notice as mailed today",
+              "shouldSee": "Mailing date 2027-02-10 and proof of mailing on the policy; status \"Cancellation pending\"",
+              "checks": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R-018",
+      "title": "Paying in full before the cancellation date stops the cancellation",
+      "milestone": "M2",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "amount_due",
+          "type": "money",
+          "label": "Amount due",
+          "currency": "USD"
+        },
+        {
+          "key": "amount_paid",
+          "type": "money",
+          "label": "Amount paid",
+          "currency": "USD"
+        },
+        {
+          "key": "payment_date",
+          "type": "date",
+          "label": "Payment received"
+        },
+        {
+          "key": "cancellation_date",
+          "type": "date",
+          "label": "Cancellation date"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "outcome",
+          "type": "enum",
+          "label": "Outcome",
+          "values": ["Cancellation withdrawn", "Cancellation stands"]
+        },
+        {
+          "key": "reason",
+          "type": "text",
+          "label": "Reason"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-018/E1",
+          "inputs": {
+            "amount_due": {
+              "value": 370,
+              "text": "$370.00"
+            },
+            "amount_paid": {
+              "value": 370,
+              "text": "$370.00"
+            },
+            "payment_date": {
+              "value": "2027-02-24",
+              "text": "2027-02-24"
+            },
+            "cancellation_date": {
+              "value": "2027-02-25",
+              "text": "2027-02-25"
+            }
+          },
+          "expected": {
+            "outcome": {
+              "value": "Cancellation withdrawn",
+              "text": "Cancellation withdrawn"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-018/E2",
+          "inputs": {
+            "amount_due": {
+              "value": 370,
+              "text": "$370.00"
+            },
+            "amount_paid": {
+              "value": 200,
+              "text": "$200.00"
+            },
+            "payment_date": {
+              "value": "2027-02-24",
+              "text": "2027-02-24"
+            },
+            "cancellation_date": {
+              "value": "2027-02-25",
+              "text": "2027-02-25"
+            }
+          },
+          "expected": {
+            "outcome": {
+              "value": "Cancellation stands",
+              "text": "Cancellation stands"
+            },
+            "reason": {
+              "value": "Paid less than the amount due",
+              "text": "Paid less than the amount due"
+            }
+          }
+        },
+        {
+          "id": "R-018/E3",
+          "inputs": {
+            "amount_due": {
+              "value": 370,
+              "text": "$370.00"
+            },
+            "amount_paid": {
+              "value": 370,
+              "text": "$370.00"
+            },
+            "payment_date": {
+              "value": "2027-02-25",
+              "text": "2027-02-25"
+            },
+            "cancellation_date": {
+              "value": "2027-02-25",
+              "text": "2027-02-25"
+            }
+          },
+          "expected": {
+            "outcome": {
+              "value": "Cancellation stands",
+              "text": "Cancellation stands"
+            },
+            "reason": {
+              "value": "Paid on or after the cancellation date",
+              "text": "Paid on or after the cancellation date"
+            }
+          }
+        },
+        {
+          "id": "R-018/E4",
+          "inputs": {
+            "amount_due": {
+              "value": 370,
+              "text": "$370.00"
+            },
+            "amount_paid": {
+              "value": 400,
+              "text": "$400.00"
+            },
+            "payment_date": {
+              "value": "2027-02-12",
+              "text": "2027-02-12"
+            },
+            "cancellation_date": {
+              "value": "2027-02-25",
+              "text": "2027-02-25"
+            }
+          },
+          "expected": {
+            "outcome": {
+              "value": "Cancellation withdrawn",
+              "text": "Cancellation withdrawn"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-019",
+      "title": "Reinstate a policy cancelled for nonpayment, with or without a gap",
+      "milestone": "M2",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "cancel_reason",
+          "type": "enum",
+          "label": "Cancelled for",
+          "values": ["Nonpayment", "Policyholder's request", "Another company reason"]
+        },
+        {
+          "key": "days_after",
+          "type": "number",
+          "label": "Days after cancellation"
+        },
+        {
+          "key": "statement",
+          "type": "enum",
+          "label": "Statement of no loss",
+          "values": ["Yes", "No"]
+        },
+        {
+          "key": "term_ended",
+          "type": "enum",
+          "label": "Term ended",
+          "values": ["Yes", "No"]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "decision",
+          "type": "enum",
+          "label": "Decision",
+          "values": ["Reinstate without a gap", "Reinstate with a gap", "Decline"]
+        },
+        {
+          "key": "reason",
+          "type": "text",
+          "label": "Reason"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-019/E1",
+          "inputs": {
+            "cancel_reason": {
+              "value": "Nonpayment",
+              "text": "Nonpayment"
+            },
+            "days_after": {
+              "value": 5,
+              "text": "5"
+            },
+            "statement": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "term_ended": {
+              "value": "No",
+              "text": "No"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Reinstate without a gap",
+              "text": "Reinstate without a gap"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-019/E2",
+          "inputs": {
+            "cancel_reason": {
+              "value": "Nonpayment",
+              "text": "Nonpayment"
+            },
+            "days_after": {
+              "value": 10,
+              "text": "10"
+            },
+            "statement": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "term_ended": {
+              "value": "No",
+              "text": "No"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Reinstate without a gap",
+              "text": "Reinstate without a gap"
+            },
+            "reason": {
+              "value": null,
+              "text": ""
+            }
+          }
+        },
+        {
+          "id": "R-019/E3",
+          "inputs": {
+            "cancel_reason": {
+              "value": "Nonpayment",
+              "text": "Nonpayment"
+            },
+            "days_after": {
+              "value": 5,
+              "text": "5"
+            },
+            "statement": {
+              "value": "No",
+              "text": "No"
+            },
+            "term_ended": {
+              "value": "No",
+              "text": "No"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Reinstate with a gap",
+              "text": "Reinstate with a gap"
+            },
+            "reason": {
+              "value": "No statement of no loss",
+              "text": "No statement of no loss"
+            }
+          }
+        },
+        {
+          "id": "R-019/E4",
+          "inputs": {
+            "cancel_reason": {
+              "value": "Nonpayment",
+              "text": "Nonpayment"
+            },
+            "days_after": {
+              "value": 11,
+              "text": "11"
+            },
+            "statement": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "term_ended": {
+              "value": "No",
+              "text": "No"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Reinstate with a gap",
+              "text": "Reinstate with a gap"
+            },
+            "reason": {
+              "value": "More than 10 days after cancellation",
+              "text": "More than 10 days after cancellation"
+            }
+          }
+        },
+        {
+          "id": "R-019/E5",
+          "inputs": {
+            "cancel_reason": {
+              "value": "Nonpayment",
+              "text": "Nonpayment"
+            },
+            "days_after": {
+              "value": 30,
+              "text": "30"
+            },
+            "statement": {
+              "value": "No",
+              "text": "No"
+            },
+            "term_ended": {
+              "value": "No",
+              "text": "No"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Reinstate with a gap",
+              "text": "Reinstate with a gap"
+            },
+            "reason": {
+              "value": "More than 10 days after cancellation",
+              "text": "More than 10 days after cancellation"
+            }
+          }
+        },
+        {
+          "id": "R-019/E6",
+          "inputs": {
+            "cancel_reason": {
+              "value": "Nonpayment",
+              "text": "Nonpayment"
+            },
+            "days_after": {
+              "value": 31,
+              "text": "31"
+            },
+            "statement": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "term_ended": {
+              "value": "No",
+              "text": "No"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Decline",
+              "text": "Decline"
+            },
+            "reason": {
+              "value": "More than 30 days after cancellation",
+              "text": "More than 30 days after cancellation"
+            }
+          }
+        },
+        {
+          "id": "R-019/E7",
+          "inputs": {
+            "cancel_reason": {
+              "value": "Policyholder's request",
+              "text": "Policyholder's request"
+            },
+            "days_after": {
+              "value": 5,
+              "text": "5"
+            },
+            "statement": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "term_ended": {
+              "value": "No",
+              "text": "No"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Decline",
+              "text": "Decline"
+            },
+            "reason": {
+              "value": "Only a policy cancelled for nonpayment can be reinstated",
+              "text": "Only a policy cancelled for nonpayment can be reinstated"
+            }
+          }
+        },
+        {
+          "id": "R-019/E8",
+          "inputs": {
+            "cancel_reason": {
+              "value": "Nonpayment",
+              "text": "Nonpayment"
+            },
+            "days_after": {
+              "value": 13,
+              "text": "13"
+            },
+            "statement": {
+              "value": "Yes",
+              "text": "Yes"
+            },
+            "term_ended": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          },
+          "expected": {
+            "decision": {
+              "value": "Decline",
+              "text": "Decline"
+            },
+            "reason": {
+              "value": "The term has ended",
+              "text": "The term has ended"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    },
+    {
+      "id": "R-020",
+      "title": "After a gap, the policyholder does not pay for the days without coverage",
+      "milestone": "M2",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "full_term_premium",
+          "type": "money",
+          "label": "Full-term premium",
+          "currency": "USD"
+        },
+        {
+          "key": "gap_days",
+          "type": "number",
+          "label": "Days without coverage"
+        },
+        {
+          "key": "days_in_term",
+          "type": "number",
+          "label": "Days in term"
+        }
+      ],
+      "outputs": [
+        {
+          "key": "credit",
+          "type": "money",
+          "label": "Premium credit",
+          "currency": "USD"
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-020/E1",
+          "inputs": {
+            "full_term_premium": {
+              "value": 2220,
+              "text": "$2,220.00"
+            },
+            "gap_days": {
+              "value": 11,
+              "text": "11"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "credit": {
+              "value": 134.18,
+              "text": "$134.18"
+            }
+          }
+        },
+        {
+          "id": "R-020/E2",
+          "inputs": {
+            "full_term_premium": {
+              "value": 2220,
+              "text": "$2,220.00"
+            },
+            "gap_days": {
+              "value": 15,
+              "text": "15"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "credit": {
+              "value": 182.97,
+              "text": "$182.97"
+            }
+          }
+        },
+        {
+          "id": "R-020/E3",
+          "inputs": {
+            "full_term_premium": {
+              "value": 2220,
+              "text": "$2,220.00"
+            },
+            "gap_days": {
+              "value": 30,
+              "text": "30"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "credit": {
+              "value": 365.93,
+              "text": "$365.93"
+            }
+          }
+        },
+        {
+          "id": "R-020/E4",
+          "inputs": {
+            "full_term_premium": {
+              "value": 2220,
+              "text": "$2,220.00"
+            },
+            "gap_days": {
+              "value": 0,
+              "text": "0"
+            },
+            "days_in_term": {
+              "value": 182,
+              "text": "182"
+            }
+          },
+          "expected": {
+            "credit": {
+              "value": 0,
+              "text": "$0.00"
+            }
+          }
+        }
+      ],
+      "scenarios": [
+        {
+          "id": "R-020/S1",
+          "title": "A late payment brings a policy back with a gap",
+          "data": "data/policy-PA-1002.json, cancelled for nonpayment effective 2027-02-25 (R-017/S1). The date is 2027-03-08.",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Policyholder",
+              "does": "Pays everything owed and asks for the policy back",
+              "shouldSee": "",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Opens PA-1002 and starts a reinstatement",
+              "shouldSee": "Status \"Cancelled\"; payment received 11 days after cancellation",
+              "checks": ""
+            },
+            {
+              "step": "3",
+              "who": "System",
+              "does": "Shows the result before anything is done",
+              "shouldSee": "\"Reinstate with a gap: More than 10 days after cancellation\"; no coverage from 2027-02-25 through 2027-03-07; premium credit $134.18",
+              "checks": "example: R-019/E4, example: R-020/E1"
+            },
+            {
+              "step": "4",
+              "who": "Service rep",
+              "does": "Confirms",
+              "shouldSee": "Status \"In force\" from 2027-03-08; expiration still 2027-06-01; a notice of reinstatement that states the dates without coverage",
+              "checks": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R-021",
+      "title": "Every transaction is kept in the policy's history",
+      "milestone": "M2",
+      "status": "active",
+      "inputs": [],
+      "outputs": [],
+      "examples": [],
+      "scenarios": [
+        {
+          "id": "R-021/S1",
+          "title": "Read the history after several changes",
+          "data": "data/policy-PA-1001.json, after R-006/S1 and R-011/S1. The date is 2027-03-11.",
+          "steps": [
+            {
+              "step": "1",
+              "who": "Service rep",
+              "does": "Opens the history of PA-1001",
+              "shouldSee": "Three entries, newest first",
+              "checks": ""
+            },
+            {
+              "step": "2",
+              "who": "Service rep",
+              "does": "Reads the newest entry",
+              "shouldSee": "Change address; effective 2027-02-01; entered 2027-03-10; approved by a supervisor; reason for approval \"Backdated more than 30 days\"; premium change $39.89",
+              "checks": ""
+            },
+            {
+              "step": "3",
+              "who": "Service rep",
+              "does": "Reads the next entry",
+              "shouldSee": "Add vehicle; effective 2027-03-03; entered 2027-03-04; no approval needed; premium change $524.18",
+              "checks": ""
+            },
+            {
+              "step": "4",
+              "who": "Service rep",
+              "does": "Looks for a way to edit or delete an entry",
+              "shouldSee": "There is none",
+              "checks": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "R-022",
+      "title": "Who may do what",
+      "milestone": "M2",
+      "status": "active",
+      "inputs": [
+        {
+          "key": "action",
+          "type": "text",
+          "label": "Action"
+        },
+        {
+          "key": "role",
+          "type": "enum",
+          "label": "Role",
+          "values": ["Service representative", "Supervisor"]
+        }
+      ],
+      "outputs": [
+        {
+          "key": "allowed",
+          "type": "enum",
+          "label": "Allowed",
+          "values": ["Yes", "No"]
+        }
+      ],
+      "examples": [
+        {
+          "id": "R-022/E1",
+          "inputs": {
+            "action": {
+              "value": "Quote a change",
+              "text": "Quote a change"
+            },
+            "role": {
+              "value": "Service representative",
+              "text": "Service representative"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        },
+        {
+          "id": "R-022/E2",
+          "inputs": {
+            "action": {
+              "value": "Issue a change that needs no approval",
+              "text": "Issue a change that needs no approval"
+            },
+            "role": {
+              "value": "Service representative",
+              "text": "Service representative"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        },
+        {
+          "id": "R-022/E3",
+          "inputs": {
+            "action": {
+              "value": "Approve or decline a change",
+              "text": "Approve or decline a change"
+            },
+            "role": {
+              "value": "Service representative",
+              "text": "Service representative"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "No",
+              "text": "No"
+            }
+          }
+        },
+        {
+          "id": "R-022/E4",
+          "inputs": {
+            "action": {
+              "value": "Approve or decline a change",
+              "text": "Approve or decline a change"
+            },
+            "role": {
+              "value": "Supervisor",
+              "text": "Supervisor"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        },
+        {
+          "id": "R-022/E5",
+          "inputs": {
+            "action": {
+              "value": "Cancel at the policyholder's request",
+              "text": "Cancel at the policyholder's request"
+            },
+            "role": {
+              "value": "Service representative",
+              "text": "Service representative"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        },
+        {
+          "id": "R-022/E6",
+          "inputs": {
+            "action": {
+              "value": "Start a cancellation for nonpayment",
+              "text": "Start a cancellation for nonpayment"
+            },
+            "role": {
+              "value": "Service representative",
+              "text": "Service representative"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        },
+        {
+          "id": "R-022/E7",
+          "inputs": {
+            "action": {
+              "value": "Start a company cancellation for another reason",
+              "text": "Start a company cancellation for another reason"
+            },
+            "role": {
+              "value": "Service representative",
+              "text": "Service representative"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "No",
+              "text": "No"
+            }
+          }
+        },
+        {
+          "id": "R-022/E8",
+          "inputs": {
+            "action": {
+              "value": "Start a company cancellation for another reason",
+              "text": "Start a company cancellation for another reason"
+            },
+            "role": {
+              "value": "Supervisor",
+              "text": "Supervisor"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        },
+        {
+          "id": "R-022/E9",
+          "inputs": {
+            "action": {
+              "value": "Reinstate with a gap",
+              "text": "Reinstate with a gap"
+            },
+            "role": {
+              "value": "Service representative",
+              "text": "Service representative"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        },
+        {
+          "id": "R-022/E10",
+          "inputs": {
+            "action": {
+              "value": "Reinstate without a gap",
+              "text": "Reinstate without a gap"
+            },
+            "role": {
+              "value": "Service representative",
+              "text": "Service representative"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "No",
+              "text": "No"
+            }
+          }
+        },
+        {
+          "id": "R-022/E11",
+          "inputs": {
+            "action": {
+              "value": "Reinstate without a gap",
+              "text": "Reinstate without a gap"
+            },
+            "role": {
+              "value": "Supervisor",
+              "text": "Supervisor"
+            }
+          },
+          "expected": {
+            "allowed": {
+              "value": "Yes",
+              "text": "Yes"
+            }
+          }
+        }
+      ],
+      "scenarios": []
+    }
+  ]
+}

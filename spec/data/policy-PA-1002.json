@@ -1,0 +1,37 @@
+{
+  "_note": "Synthetic test data. Every name, number and date is invented.",
+  "policy_number": "PA-1002",
+  "carrier": "Demo Mutual Insurance",
+  "line_of_business": "personal-auto",
+  "state": "NY",
+  "status": "In force",
+  "term": { "effective": "2026-12-01", "expiration": "2027-06-01", "days": 182 },
+  "named_insured": { "name": "Morgan Ellis", "address": "27 Larch Street, Albany, NY 12203" },
+  "drivers": [{ "id": "D1", "name": "Morgan Ellis", "date_of_birth": "1991-02-11" }],
+  "vehicles": [
+    { "id": "V1", "year": 2020, "make": "Subaru", "model": "Outback", "full_term_premium": 2220.0 }
+  ],
+  "full_term_premium": 2220.0,
+  "payment_plan": {
+    "kind": "6 monthly installments",
+    "installment_amount": 370.0,
+    "due_dates": [
+      "2026-12-01",
+      "2027-01-01",
+      "2027-02-01",
+      "2027-03-01",
+      "2027-04-01",
+      "2027-05-01"
+    ],
+    "paid_through": "2027-01-01",
+    "missed": [{ "due": "2027-02-01", "amount_due": 370.0 }]
+  },
+  "history": [
+    {
+      "version": 1,
+      "transaction": "New business",
+      "effective": "2026-12-01",
+      "entered": "2026-11-18"
+    }
+  ]
+}

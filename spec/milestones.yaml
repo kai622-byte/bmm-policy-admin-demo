@@ -1,0 +1,17 @@
+# Milestones for the personal auto policy admin slice (synthetic reference spec).
+milestones:
+  - id: M1
+    title: Quote and issue mid-term changes
+    goal: >-
+      A service representative can find a policy, quote a mid-term change, send it
+      for approval when the rules say so, and issue it as a new version of the policy.
+    order: 1
+    requirements:
+      [R-001, R-002, R-003, R-004, R-005, R-006, R-007, R-008, R-009, R-010, R-011, R-012, R-013]
+  - id: M2
+    title: Cancellations and reinstatements
+    goal: >-
+      A policy can be cancelled at the policyholder's request or by the company with
+      the right notice for its state, and reinstated when the rules allow.
+    order: 2
+    requirements: [R-014, R-015, R-016, R-017, R-018, R-019, R-020, R-021, R-022]
